@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <style>
+            .mdc-card__actions, .mdc-card__content {
+                padding: 16px;
+                margin: 0 auto;
+                max-width: 700px;
+            }
+
+            .mdc-text-field {
+                height: 100%;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .mdc-card {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-right: -50%;
+                height: 250px;
+                width: 350px;
+            }
+        </style>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Вход</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+              rel="stylesheet">
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    </head>
+</head>
+<body>
+<form th:method="POST" th:action="@{/login}" th:object="${user}">
+    <div class="mdc-card">
+        <div class="mdc-card__content">
+
+            <label class="mdc-text-field mdc-text-field--outlined" id="username">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label">Введите логин</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+                <input type="text" class="mdc-text-field__input" aria-labelledby="my-label-id" th:field="*{username}">
+            </label>
+            <label class="mdc-text-field mdc-text-field--outlined" id="password">
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label">Введите пароль</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+                <input type="password" class="mdc-text-field__input" aria-labelledby="my-label-id"
+                       th:field="*{password}">
+            </label>
+        </div>
+        <div class="mdc-card__actions">
+
+            <button class="mdc-button mdc-card__action mdc-card__action--button">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">Вход</span>
+            </button>
+
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript">
+    mdc.textField.MDCTextField.attachTo(document.querySelector('#username'));
+    mdc.textField.MDCTextField.attachTo(document.querySelector('#password'));
+</script>
+</html>
