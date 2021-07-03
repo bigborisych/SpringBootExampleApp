@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @Column
     @Fetch(FetchMode.JOIN)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -45,18 +45,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public User(String firstName, String lastName, String email, String username, String password, Set<Role> roles) {
-        this(firstName, lastName, email);
         this.username = username;
         this.password = password;
-        this.roles = roles;
     }
+
 
     public Long getId() {
         return id;

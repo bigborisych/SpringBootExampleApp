@@ -40,7 +40,6 @@ public class UserDaoHiberEntityManager implements UserDao {
                 .setParameter("id", id)
                 .getSingleResult();
         if (oldUser.getId().equals(id)) {
-            user.setRoles(oldUser.getRoles());
             entityManager.merge(user);
         }
     }
