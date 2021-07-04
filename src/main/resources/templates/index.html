@@ -9,17 +9,92 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Админ панель</title>
+    <style>
+        .navbar-text {
+            margin-left: 7px;
+            font-size: x-large;
+            color: #e3f2fd;
+        }
 
+        .navbar-nav {
+            position: absolute;
+            right: 10px;
+        }
+
+        .email-text {
+            font-weight: bolder;
+        }
+
+        .col-3 {
+            max-width: 300px;
+            height: 100vh;
+            background-color: white;
+        }
+
+        .content {
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .panel {
+            margin-left: 15px;
+            margin-top: 15px;
+        }
+
+        .panel h1 {
+            margin-bottom: 20px;
+        }
+
+        #nav-tabContent {
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .alert {
+            margin-bottom: 0;
+        }
+
+        #nav-table {
+            margin: 0 20px 20px;
+            padding-top: 20px;
+            padding-bottom: 30px;
+        }
+
+        #nav-create {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        #nav-create-form {
+            width: 400px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        #nav-create-form button {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        #about-block {
+            background-color: white;
+            padding: 20px 20px 30px;
+        }
+    </style>
 </head>
 <body>
 <div class="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" style="color: #e3f2fd;" th:text="${authUser.getEmail()} + ' роль: '"></a>
-
-        <div th:each="role : ${authUser.getRoles()}" th:switch="${role.getRole()}">
-            <p th:case="'ROLE_ADMIN'">ADMIN</p>
-            <p th:case="'ROLE_USER'">USER</p>
-            <p th:case="">NO ROLE</p>
+        <span class="navbar-text email-text text-white" th:text="${authUser.getEmail()}">
+            user@user
+        </span>
+        <span class="navbar-text text-white">
+            в роли:
+        </span>
+        <div id="" th:each="role : ${authUser.getRoles()}" th:switch="${role.getRole()}">
+            <span class="navbar-text text-white" th:case="'ROLE_ADMIN'">ADMIN</span>
+            <span class="navbar-text text-white" th:case="'ROLE_USER'">USER</span>
         </div>
         <div class="collapse navbar-collapse " id="navbarTogglerDemo02">
             <ul class="navbar-nav mr-auto mt-2 mt-md-0">
@@ -30,7 +105,7 @@
         </div>
     </nav>
 </div>
-<div class="content align-items-stretch">
+<div class="content">
     <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -44,46 +119,54 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel"
                      aria-labelledby="v-pills-admin-tab" sec:authorize="hasRole('ADMIN')">
-                    <div class="admin-panel">
+                    <div class="panel">
                         <h1>Админ панель</h1>
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <a class="nav-item nav-link active" id="nav-table-tab" data-toggle="tab"
-                                   href="#nav-table" role="tab" aria-controls="nav-table" aria-selected="true">Таблица
+                                   href="#nav-table" role="tab" aria-controls="nav-table" aria-selected="true"
+                                   data-text="Список пользователей">Таблица
                                     пользователей</a>
                                 <a class="nav-item nav-link" id="nav-create-tab" data-toggle="tab" href="#nav-create"
                                    role="tab" aria-controls="nav-create" aria-selected="false">Создать пользователя</a>
                             </div>
                         </nav>
+                        <div class="alert alert-secondary" id="nav-list-text" role="alert">
+                            <strong>Список пользователей</strong>
+                        </div>
+                        <div class="alert alert-secondary" id="nav-create-text" role="alert">
+                            <strong>Создать пользователя</strong>
+                        </div>
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-table" role="tabpanel"
                                  aria-labelledby="nav-table-tab">
-                                <table class="table">
+
+                                <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Имя</th>
-                                        <th>Фамилия</th>
-                                        <th>Логин</th>
-                                        <th>Email</th>
-                                        <th>Роль</th>
-                                        <th>Редактировать</th>
-                                        <th>Удалить</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Имя</th>
+                                        <th scope="col">Фамилия</th>
+                                        <th scope="col">Логин</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Роль</th>
+                                        <th scope="col">Редактировать</th>
+                                        <th scope="col">Удалить</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="table-secondary" th:each="correntUser : ${users}">
-                                        <th scope="row" th:text="${correntUser.getId()}"></th>
+                                    <tr th:each="correntUser : ${users}">
+                                        <td th:text="${correntUser.getId()}"></td>
                                         <td th:text="${correntUser.getFirstName()}"></td>
                                         <td th:text="${correntUser.getLastName()}"></td>
                                         <td th:text="${correntUser.getUsername()}"></td>
                                         <td th:text="${correntUser.getEmail()}"></td>
                                         <td>
-                                            <div th:each="role : ${correntUser.getRoles()}"
-                                                 th:switch="${role.getRole()}">
-                                                <p th:case="'ROLE_ADMIN'">ADMIN</p>
-                                                <p th:case="'ROLE_USER'">USER</p>
-                                            </div>
+                                            <span th:each="role : ${correntUser.getRoles()}"
+                                                  th:switch="${role.getRole()}">
+                                                <span th:case="'ROLE_ADMIN'">ADMIN</span>
+                                                <span th:case="'ROLE_USER'">USER</span>
+                                            </span>
                                             <div th:if="${correntUser.getRoles().isEmpty()}">
                                                 <p>NO ROLES</p>
                                             </div>
@@ -117,7 +200,7 @@
                                 </table>
                             </div>
                             <div class="tab-pane fade" id="nav-create" role="tabpanel" aria-labelledby="nav-create-tab">
-                                <form th:method="POST" th:action="@{/}" th:object="${newUser}">
+                                <form id="nav-create-form" th:method="POST" th:action="@{/}" th:object="${newUser}">
                                     <div class="form-group">
                                         <label for="firstNameCreateInput">Имя</label>
                                         <input type="text" class="form-control" id="firstNameCreateInput"
@@ -154,7 +237,8 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-lg btn-success">Добавить
+                                    <button type="submit" class="btn btn-primary btn-lg btn-success"
+                                            id="nav-create-form-btn">Добавить
                                         пользователя
                                     </button>
                                 </form>
@@ -163,36 +247,44 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-user">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Имя</th>
-                            <th>Фамилия</th>
-                            <th>Логин</th>
-                            <th>Email</th>
-                            <th>Роль</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="table-secondary">
-                            <th scope="row" th:text="${authUser.getId()}"></th>
-                            <td th:text="${authUser.getFirstName()}"></td>
-                            <td th:text="${authUser.getLastName()}"></td>
-                            <td th:text="${authUser.getUsername()}"></td>
-                            <td th:text="${authUser.getEmail()}"></td>
-                            <td>
-                                <div th:each="role : ${authUser.getRoles()}" th:switch="${role.getRole()}">
-                                    <p th:case="'ROLE_ADMIN'">ADMIN</p>
-                                    <p th:case="'ROLE_USER'">USER</p>
-                                </div>
-                                <div th:if="${authUser.getRoles().isEmpty()}">
-                                    <p>NO ROLES</p>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="panel">
+                        <h1>Информационная страница</h1>
+                        <div class="alert alert-secondary" role="alert">
+                            <strong>О пользователе</strong>
+                        </div>
+                        <div id="about-block">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Фамилия</th>
+                                    <th scope="col">Логин</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Роль</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th th:text="${authUser.getId()}"></th>
+                                    <td th:text="${authUser.getFirstName()}"></td>
+                                    <td th:text="${authUser.getLastName()}"></td>
+                                    <td th:text="${authUser.getUsername()}"></td>
+                                    <td th:text="${authUser.getEmail()}"></td>
+                                    <td>
+                                        <div th:each="role : ${authUser.getRoles()}" th:switch="${role.getRole()}">
+                                            <p th:case="'ROLE_ADMIN'">ADMIN</p>
+                                            <p th:case="'ROLE_USER'">USER</p>
+                                        </div>
+                                        <div th:if="${authUser.getRoles().isEmpty()}">
+                                            <p>NO ROLES</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -391,6 +483,17 @@
         modal.find('#usernameEditInput').val(userUsername)
         modal.find('#updateForm').attr("action", "/?id=" + userId)
     })
+    $(document).ready(function () {
+        $("#nav-create-text").hide();
+        $("#nav-table-tab").click(function () {
+            $("#nav-create-text").hide();
+            $("#nav-list-text").show()
+        });
+        $("#nav-create-tab").click(function () {
+            $("#nav-list-text").hide();
+            $("#nav-create-text").show()
+        });
+    });
 </script>
 </body>
 </html>
