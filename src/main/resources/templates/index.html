@@ -8,7 +8,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Админ панель</title>
+    <title sec:authorize="hasRole('USER')">Страница пользователя</title>
+    <title sec:authorize="hasRole('ADMIN')">Админ панель</title>
     <style>
         .navbar-text {
             margin-left: 7px;
@@ -108,7 +109,7 @@
 <div class="content">
     <div class="row">
         <div class="col-3">
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab"
                    aria-controls="v-pills-admin" aria-selected="true" sec:authorize="hasRole('ADMIN')">Админ</a>
                 <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab"
@@ -521,10 +522,8 @@
         });
     });
 </script>
-<script th:if="${!authUser.getRoles().contains('ROLE_ADMIN') && authUser.getRoles().contains('ROLE_USER')}">
-    $(function () {
-        $('#v-pills-tab a[href="#v-pills-user"]').tab('show')
-    })
+<script sec:authorize="hasRole('USER')">
+    $('#v-pills-tab a[href="#v-pills-user"]').tab('show')
 </script>
 </body>
 </html>
