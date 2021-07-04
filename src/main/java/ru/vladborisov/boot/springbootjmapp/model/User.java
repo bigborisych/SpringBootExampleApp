@@ -25,6 +25,9 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column
+    private Long age;
+
+    @Column(unique = true)
     private String email;
 
 
@@ -45,9 +48,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String username, String password) {
+    public User(String firstName, String lastName, Long age, String email, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.username = username;
         this.password = password;
@@ -76,6 +80,14 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
     }
 
     public String getEmail() {

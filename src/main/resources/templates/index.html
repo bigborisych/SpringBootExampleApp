@@ -108,7 +108,7 @@
 <div class="content">
     <div class="row">
         <div class="col-3">
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" >
                 <a class="nav-link active" id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab"
                    aria-controls="v-pills-admin" aria-selected="true" sec:authorize="hasRole('ADMIN')">Админ</a>
                 <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab"
@@ -147,6 +147,7 @@
                                         <th scope="col">ID</th>
                                         <th scope="col">Имя</th>
                                         <th scope="col">Фамилия</th>
+                                        <th scope="col">Возраст</th>
                                         <th scope="col">Логин</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Роль</th>
@@ -159,6 +160,7 @@
                                         <td th:text="${correntUser.getId()}"></td>
                                         <td th:text="${correntUser.getFirstName()}"></td>
                                         <td th:text="${correntUser.getLastName()}"></td>
+                                        <td th:text="${correntUser.getAge()}"></td>
                                         <td th:text="${correntUser.getUsername()}"></td>
                                         <td th:text="${correntUser.getEmail()}"></td>
                                         <td>
@@ -178,6 +180,7 @@
                                                     th:data-edit-email="${correntUser.getEmail()}"
                                                     th:data-edit-firstname="${correntUser.getFirstName()}"
                                                     th:data-edit-lastname="${correntUser.getLastName()}"
+                                                    th:data-edit-age="${correntUser.getAge()}"
                                                     th:data-edit-username="${correntUser.getUsername()}">
                                                 Редактировать
                                             </button>
@@ -190,6 +193,7 @@
                                                     th:data-delete-id="${correntUser.getId()}"
                                                     th:data-delete-email="${correntUser.getEmail()}"
                                                     th:data-delete-firstname="${correntUser.getFirstName()}"
+                                                    th:data-delete-age="${correntUser.getAge()}"
                                                     th:data-delete-lastname="${correntUser.getLastName()}"
                                                     th:data-delete-username="${correntUser.getUsername()}">
                                                 Удалить
@@ -215,6 +219,11 @@
                                         <label for="usernameCreateInput">Логин</label>
                                         <input type="text" class="form-control" id="usernameCreateInput"
                                                placeholder="Введите логин" th:field="*{username}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ageCreateInput">Логин</label>
+                                        <input type="text" class="form-control" id="ageCreateInput"
+                                               placeholder="Введите возраст" th:field="*{age}">
                                     </div>
                                     <div class="form-group">
                                         <label for="emailCreateInput">Email</label>
@@ -259,6 +268,7 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Имя</th>
                                     <th scope="col">Фамилия</th>
+                                    <th scope="col">Возраст</th>
                                     <th scope="col">Логин</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Роль</th>
@@ -269,6 +279,7 @@
                                     <th th:text="${authUser.getId()}"></th>
                                     <td th:text="${authUser.getFirstName()}"></td>
                                     <td th:text="${authUser.getLastName()}"></td>
+                                    <td th:text="${authUser.getAge()}"></td>
                                     <td th:text="${authUser.getUsername()}"></td>
                                     <td th:text="${authUser.getEmail()}"></td>
                                     <td>
@@ -318,6 +329,11 @@
                                 <label for="lastNameDeleteInput">Фамилия</label>
                                 <input type="text" class="form-control"
                                        id="lastNameDeleteInput">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastNameDeleteInput">Возраст</label>
+                                <input type="text" class="form-control"
+                                       id="ageDeleteInput">
                             </div>
                             <div class="form-group">
                                 <label for="usernameDeleteInput">Логин</label>
@@ -396,6 +412,12 @@
                                    th:field="*{lastName}">
                         </div>
                         <div class="form-group">
+                            <label for="ageEditInput">Фамилия</label>
+                            <input type="text" class="form-control"
+                                   id="ageEditInput"
+                                   th:field="*{age}">
+                        </div>
+                        <div class="form-group">
                             <label for="usernameEditInput">Логин</label>
                             <input type="text" class="form-control"
                                    id="usernameEditInput"
@@ -454,6 +476,7 @@
         var button = $(event.relatedTarget)
         var userId = button.data('delete-id')
         var userFirstName = button.data('delete-firstname')
+        var userAge = button.data('delete-age')
         var userLastName = button.data('delete-lastname')
         var userEmail = button.data('delete-email')
         var userUsername = button.data('delete-username')
@@ -461,6 +484,7 @@
         var modal = $(this)
         modal.find('#idDeleteTextInput').val(userId)
         modal.find('#firstNameDeleteInput').val(userFirstName)
+        modal.find('#ageNameDeleteInput').val(userAge)
         modal.find('#lastNameDeleteInput').val(userLastName)
         modal.find('#emailDeleteInput').val(userEmail)
         modal.find('#usernameDeleteInput').val(userUsername)
@@ -470,6 +494,7 @@
     $('#editModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         var userId = button.data('edit-id')
+        var userAge = button.data('edit-age')
         var userFirstName = button.data('edit-firstname')
         var userLastName = button.data('edit-lastname')
         var userEmail = button.data('edit-email')
@@ -478,6 +503,7 @@
         var modal = $(this)
         modal.find('#idDisabledTextInput').val(userId)
         modal.find('#firstNameEditInput').val(userFirstName)
+        modal.find('#ageEditInput').val(userAge)
         modal.find('#lastNameEditInput').val(userLastName)
         modal.find('#emailEditInput').val(userEmail)
         modal.find('#usernameEditInput').val(userUsername)
@@ -494,6 +520,11 @@
             $("#nav-create-text").show()
         });
     });
+</script>
+<script th:if="${!authUser.getRoles().contains('ROLE_ADMIN')}">
+    $(function () {
+        $('#v-pills-tab a[href="#v-pills-user"]').tab('show')
+    })
 </script>
 </body>
 </html>
