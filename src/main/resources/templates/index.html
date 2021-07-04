@@ -521,7 +521,7 @@
         });
     });
 </script>
-<script th:if="${!authUser.getRoles().contains('ROLE_ADMIN')}">
+<script th:if="${!authUser.getRoles().contains('ROLE_ADMIN') && authUser.getRoles().contains('ROLE_USER')}">
     $(function () {
         $('#v-pills-tab a[href="#v-pills-user"]').tab('show')
     })
