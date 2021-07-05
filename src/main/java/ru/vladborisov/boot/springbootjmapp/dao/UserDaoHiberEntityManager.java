@@ -33,6 +33,11 @@ public class UserDaoHiberEntityManager implements UserDao {
     }
 
     @Override
+    public Role getRole(String role) {
+        return entityManager.createQuery("from Role role where role.role=:role", Role.class).setParameter("role", role).getSingleResult();
+    }
+
+    @Override
     public void updateUser(User user, Long id) {
         user.setId(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,10 +63,8 @@ public class UserDaoHiberEntityManager implements UserDao {
 
     @Override
     public User findByUsername(String username) {
-        return getUsers()
-                .stream()
-                .filter(x -> x.getUsername().contains(username))
-                .findFirst()
-                .orElse(null);
+        return entityManager.createQuery("from User user where user.username=:username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
     }
 }

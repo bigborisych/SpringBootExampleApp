@@ -222,8 +222,8 @@
                                                placeholder="Введите логин" th:field="*{username}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="ageCreateInput">Логин</label>
-                                        <input type="text" class="form-control" id="ageCreateInput"
+                                        <label for="ageCreateInput">Возраст</label>
+                                        <input type="number" class="form-control" id="ageCreateInput"
                                                placeholder="Введите возраст" th:field="*{age}">
                                     </div>
                                     <div class="form-group">
@@ -485,7 +485,7 @@
         var modal = $(this)
         modal.find('#idDeleteTextInput').val(userId)
         modal.find('#firstNameDeleteInput').val(userFirstName)
-        modal.find('#ageNameDeleteInput').val(userAge)
+        modal.find('#ageDeleteInput').val(userAge)
         modal.find('#lastNameDeleteInput').val(userLastName)
         modal.find('#emailDeleteInput').val(userEmail)
         modal.find('#usernameDeleteInput').val(userUsername)

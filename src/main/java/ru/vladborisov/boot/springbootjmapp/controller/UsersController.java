@@ -1,6 +1,8 @@
 package ru.vladborisov.boot.springbootjmapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,6 @@ import ru.vladborisov.boot.springbootjmapp.model.Role;
 import ru.vladborisov.boot.springbootjmapp.model.User;
 import ru.vladborisov.boot.springbootjmapp.service.UserService;
 
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -25,8 +26,10 @@ public class UsersController {
     UserService userService;
 
     @GetMapping
-    public String getDefaultPage(Principal principal, Model model) {
-        User user = (User) userDetailsService.loadUserByUsername(principal.getName());
+    public String getDefaultPage(Model model) {
+        User user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         Set<Role> roles = userService.getRoles();
         List<User> users = userService.getUsers();
 
@@ -40,11 +43,7 @@ public class UsersController {
 
     @PostMapping
     public String createUser(@ModelAttribute User user, @RequestParam String[] role) {
-        user.setRoles(userService
-                .getRoles()
-                .stream()
-                .filter((x) -> Arrays.stream(role).allMatch(y -> x.getRole().contains(y)))
-                .collect(Collectors.toSet()));
+        user.setRoles(Arrays.stream(role).map(x -> userService.getRole(x)).collect(Collectors.toSet()));
         userService.add(user);
         return "redirect:/";
     }
@@ -63,13 +62,7 @@ public class UsersController {
 
     @PatchMapping
     public String updateUser(@ModelAttribute User user, @RequestParam Long id, @RequestParam String[] role) {
-        user.setRoles(userService
-                .getRoles()
-                .stream()
-                .filter((x) -> Arrays.stream(role).allMatch(y -> x.getRole().contains(y)))
-                .collect(Collectors.toSet()));
-        user.getRoles().forEach(x -> System.out.println(x.getRole()));
-        System.out.println(Arrays.toString(role));
+        user.setRoles(Arrays.stream(role).map(x -> userService.getRole(x)).collect(Collectors.toSet()));
         userService.updateUser(user, id);
         return "redirect:/";
     }
