@@ -41,6 +41,7 @@ public class UsersController {
         model.addAttribute("patchUser", new User());
         return "index";
     }
+
     @GetMapping("/login")
     public String getLoginPage(Model model) {
         model.addAttribute("user", new User());
