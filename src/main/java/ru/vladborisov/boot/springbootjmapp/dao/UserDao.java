@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public interface UserDao {
+public interface UserDao{
     void add(User user);
 
     List<User> getUsers();
@@ -20,4 +20,6 @@ public interface UserDao {
     Set<Role> getRoles();
 
     User findByUsername(String username);
+
+    void setRole(Role role);
 }

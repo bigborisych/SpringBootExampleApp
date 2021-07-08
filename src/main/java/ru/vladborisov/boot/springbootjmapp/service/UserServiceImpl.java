@@ -50,4 +50,11 @@ public class UserServiceImpl implements UserService {
     public Set<Role> getRoles() {
         return userDao.getRoles();
     }
+
+    @Override
+    public void setRole(Role role) {
+        userDao.setRole(role);
+    }
+
+
 }

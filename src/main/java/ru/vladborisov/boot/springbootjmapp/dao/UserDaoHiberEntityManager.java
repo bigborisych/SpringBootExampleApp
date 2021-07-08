@@ -14,10 +14,8 @@ import java.util.Set;
 
 @Repository
 public class UserDaoHiberEntityManager implements UserDao {
-
     @PersistenceContext
     private EntityManager entityManager;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -66,5 +64,10 @@ public class UserDaoHiberEntityManager implements UserDao {
         return entityManager.createQuery("from User user where user.username=:username", User.class)
                 .setParameter("username", username)
                 .getSingleResult();
+    }
+
+    @Override
+    public void setRole(Role role) {
+        entityManager.persist(role);
     }
 }

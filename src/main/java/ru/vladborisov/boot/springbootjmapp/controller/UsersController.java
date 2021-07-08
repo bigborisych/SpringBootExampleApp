@@ -1,6 +1,7 @@
 package ru.vladborisov.boot.springbootjmapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,30 +41,9 @@ public class UsersController {
         model.addAttribute("patchUser", new User());
         return "index";
     }
-
-    @PostMapping
-    public String createUser(@ModelAttribute User user, @RequestParam String[] role) {
-        user.setRoles(Arrays.stream(role).map(x -> userService.getRole(x)).collect(Collectors.toSet()));
-        userService.add(user);
-        return "redirect:/";
-    }
-
     @GetMapping("/login")
     public String getLoginPage(Model model) {
         model.addAttribute("user", new User());
         return "login";
-    }
-
-    @DeleteMapping
-    public String deleteUser(@RequestParam Long id) {
-        userService.deleteUser(id);
-        return "redirect:/";
-    }
-
-    @PatchMapping
-    public String updateUser(@ModelAttribute User user, @RequestParam Long id, @RequestParam String[] role) {
-        user.setRoles(Arrays.stream(role).map(x -> userService.getRole(x)).collect(Collectors.toSet()));
-        userService.updateUser(user, id);
-        return "redirect:/";
     }
 }

@@ -18,4 +18,5 @@ public interface UserService {
     void deleteUser(Long id);
 
     Set<Role> getRoles();
+    void setRole(Role role);
 }
